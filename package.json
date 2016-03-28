@@ -1,0 +1,28 @@
+{
+  "name": "highways",
+  "version": "1.0.0",
+  "description": "Elasticsearch instance filled with a list of highways for querying",
+  "main": "dist/index.js",
+  "dependencies": {
+    "request": "^2.69.0",
+    "uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^1.8.9"
+  },
+  "scripts": {
+    "prestart": "./node_modules/typescript/bin/tsc --target ES5 --outDir ./dist/ ./src/index.ts",
+    "start": "node ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgrm/highways.git"
+  },
+  "author": "Peter Grman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pgrm/highways/issues"
+  },
+  "homepage": "https://github.com/pgrm/highways#readme"
+}
