@@ -26,6 +26,7 @@ Vagrant.configure(2) do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.network "forwarded_port", guest: 9200, host: 9200
+  config.vm.network "forwarded_port", guest: 5432, host: 5432
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -74,19 +75,26 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     type docker > /dev/null 2>&1 || { wget -qO- https://get.docker.com/ | sh; }
 
-    docker run --name="elasticsearch" \
+    docker run --name="postgres" \
                --restart="always" \
-               -p 9200:9200 \
-               -d elasticsearch
+               -p 5432:5432 \
+               -e POSTGRES_PASSWORD=highways \
+               -v /vagrant/data:/docker-entrypoint-initdb.d \
+               -d postgres
 
-    cd /vagrant
-    rm -rf node_modules
+    # docker run --name="elasticsearch" \
+    #            --restart="always" \
+    #            -p 9200:9200 \
+    #            -d elasticsearch
 
-    curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-    apt-get update
-    apt-get install -y build-essential nodejs
+    # cd /vagrant
+    # rm -rf node_modules
 
-    npm install
-    npm start
+    # curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+    # apt-get update
+    # apt-get install -y build-essential nodejs
+
+    # npm install
+    # npm start
   SHELL
 end
